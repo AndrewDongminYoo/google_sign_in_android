@@ -41,16 +41,16 @@ class SignInDemoState extends State<SignInDemo> {
   }
 
   Future<void> _ensureInitialized() {
-    return _initialization ??=
-        GoogleSignInPlatform.instance.initWithParams(const SignInInitParameters(
-      scopes: <String>[
-        'email',
-        'https://www.googleapis.com/auth/contacts.readonly',
-      ],
-    ))
-          ..catchError((dynamic _) {
-            _initialization = null;
-          });
+    return _initialization ??= GoogleSignInPlatform.instance.initWithParams(
+      const SignInInitParameters(
+        scopes: <String>[
+          'email',
+          'https://www.googleapis.com/auth/contacts.readonly',
+        ],
+      ),
+    )..catchError((dynamic _) {
+        _initialization = null;
+      });
   }
 
   void _setUser(GoogleSignInUserData? user) {
@@ -172,12 +172,13 @@ class SignInDemoState extends State<SignInDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Google Sign In'),
-        ),
-        body: ConstrainedBox(
-          constraints: const BoxConstraints.expand(),
-          child: _buildBody(),
-        ));
+      appBar: AppBar(
+        title: const Text('Google Sign In'),
+      ),
+      body: ConstrainedBox(
+        constraints: const BoxConstraints.expand(),
+        child: _buildBody(),
+      ),
+    );
   }
 }

@@ -5,9 +5,8 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart' show visibleForTesting;
+import 'package:google_sign_in_android/src/messages.g.dart';
 import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
-
-import 'src/messages.g.dart';
 
 /// Android implementation of [GoogleSignInPlatform].
 class GoogleSignInAndroid extends GoogleSignInPlatform {
@@ -30,24 +29,28 @@ class GoogleSignInAndroid extends GoogleSignInPlatform {
     String? hostedDomain,
     String? clientId,
   }) {
-    return initWithParams(SignInInitParameters(
-      signInOption: signInOption,
-      scopes: scopes,
-      hostedDomain: hostedDomain,
-      clientId: clientId,
-    ));
+    return initWithParams(
+      SignInInitParameters(
+        signInOption: signInOption,
+        scopes: scopes,
+        hostedDomain: hostedDomain,
+        clientId: clientId,
+      ),
+    );
   }
 
   @override
   Future<void> initWithParams(SignInInitParameters params) {
-    return _api.init(InitParams(
-      signInType: _signInTypeForOption(params.signInOption),
-      scopes: params.scopes,
-      hostedDomain: params.hostedDomain,
-      clientId: params.clientId,
-      serverClientId: params.serverClientId,
-      forceCodeForRefreshToken: params.forceCodeForRefreshToken,
-    ));
+    return _api.init(
+      InitParams(
+        signInType: _signInTypeForOption(params.signInOption),
+        scopes: params.scopes,
+        hostedDomain: params.hostedDomain,
+        clientId: params.clientId,
+        serverClientId: params.serverClientId,
+        forceCodeForRefreshToken: params.forceCodeForRefreshToken,
+      ),
+    );
   }
 
   @override
@@ -61,13 +64,15 @@ class GoogleSignInAndroid extends GoogleSignInPlatform {
   }
 
   @override
-  Future<GoogleSignInTokenData> getTokens(
-      {required String email, bool? shouldRecoverAuth = true}) {
-    return _api
-        .getAccessToken(email, shouldRecoverAuth ?? true)
-        .then((String result) => GoogleSignInTokenData(
-              accessToken: result,
-            ));
+  Future<GoogleSignInTokenData> getTokens({
+    required String email,
+    bool? shouldRecoverAuth = true,
+  }) {
+    return _api.getAccessToken(email, shouldRecoverAuth ?? true).then(
+          (String result) => GoogleSignInTokenData(
+            accessToken: result,
+          ),
+        );
   }
 
   @override

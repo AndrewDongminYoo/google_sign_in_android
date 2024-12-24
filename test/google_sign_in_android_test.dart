@@ -43,14 +43,16 @@ void main() {
 
   test('signInSilently transforms platform data to GoogleSignInUserData',
       () async {
-    when(api.signInSilently()).thenAnswer((_) async => UserData(
-          email: _user.email,
-          id: _user.id,
-          photoUrl: _user.photoUrl,
-          displayName: _user.displayName,
-          idToken: _user.idToken,
-          serverAuthCode: _user.serverAuthCode,
-        ));
+    when(api.signInSilently()).thenAnswer(
+      (_) async => UserData(
+        email: _user.email,
+        id: _user.id,
+        photoUrl: _user.photoUrl,
+        displayName: _user.displayName,
+        idToken: _user.idToken,
+        serverAuthCode: _user.serverAuthCode,
+      ),
+    );
 
     final dynamic response = await googleSignIn.signInSilently();
 
@@ -61,19 +63,23 @@ void main() {
     when(api.signInSilently())
         .thenAnswer((_) async => throw PlatformException(code: 'fail'));
 
-    expect(googleSignIn.signInSilently(),
-        throwsA(isInstanceOf<PlatformException>()));
+    expect(
+      googleSignIn.signInSilently(),
+      throwsA(isInstanceOf<PlatformException>()),
+    );
   });
 
   test('signIn transforms platform data to GoogleSignInUserData', () async {
-    when(api.signIn()).thenAnswer((_) async => UserData(
-          email: _user.email,
-          id: _user.id,
-          photoUrl: _user.photoUrl,
-          displayName: _user.displayName,
-          idToken: _user.idToken,
-          serverAuthCode: _user.serverAuthCode,
-        ));
+    when(api.signIn()).thenAnswer(
+      (_) async => UserData(
+        email: _user.email,
+        id: _user.id,
+        photoUrl: _user.photoUrl,
+        displayName: _user.displayName,
+        idToken: _user.idToken,
+        serverAuthCode: _user.serverAuthCode,
+      ),
+    );
 
     final dynamic response = await googleSignIn.signIn();
 
@@ -93,7 +99,9 @@ void main() {
         .thenAnswer((_) async => _token.accessToken!);
 
     final GoogleSignInTokenData response = await googleSignIn.getTokens(
-        email: _user.email, shouldRecoverAuth: recoverAuth);
+      email: _user.email,
+      shouldRecoverAuth: recoverAuth,
+    );
 
     expect(response, _token);
   });
@@ -103,7 +111,9 @@ void main() {
         .thenAnswer((_) async => _token.accessToken!);
 
     final GoogleSignInTokenData response = await googleSignIn.getTokens(
-        email: _user.email, shouldRecoverAuth: null);
+      email: _user.email,
+      shouldRecoverAuth: null,
+    );
 
     expect(response, _token);
   });
@@ -131,8 +141,10 @@ void main() {
     expect(passedParams.clientId, initParams.clientId);
     // These should use whatever the SignInInitParameters defaults are.
     expect(passedParams.serverClientId, initParams.serverClientId);
-    expect(passedParams.forceCodeForRefreshToken,
-        initParams.forceCodeForRefreshToken);
+    expect(
+      passedParams.forceCodeForRefreshToken,
+      initParams.forceCodeForRefreshToken,
+    );
   });
 
   test('initWithParams passes arguments', () async {
@@ -154,8 +166,10 @@ void main() {
     expect(passedParams.signInType, SignInType.games);
     expect(passedParams.clientId, initParams.clientId);
     expect(passedParams.serverClientId, initParams.serverClientId);
-    expect(passedParams.forceCodeForRefreshToken,
-        initParams.forceCodeForRefreshToken);
+    expect(
+      passedParams.forceCodeForRefreshToken,
+      initParams.forceCodeForRefreshToken,
+    );
   });
 
   test('clearAuthCache passes arguments', () async {

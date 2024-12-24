@@ -2,15 +2,18 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
 import 'package:pigeon/pigeon.dart';
 
-@ConfigurePigeon(PigeonOptions(
-  dartOut: 'lib/src/messages.g.dart',
-  javaOut:
-      'android/src/main/java/io/flutter/plugins/googlesignin/Messages.java',
-  javaOptions: JavaOptions(package: 'io.flutter.plugins.googlesignin'),
-  copyrightHeader: 'pigeons/copyright.txt',
-))
+@ConfigurePigeon(
+  PigeonOptions(
+    dartOut: 'lib/src/messages.g.dart',
+    javaOut:
+        'android/src/main/java/io/flutter/plugins/googlesignin/Messages.java',
+    javaOptions: JavaOptions(package: 'io.flutter.plugins.googlesignin'),
+    copyrightHeader: 'pigeons/copyright.txt',
+  ),
+)
 
 /// Pigeon version of SignInOption.
 enum SignInType {
@@ -43,9 +46,9 @@ class InitParams {
   final bool forceCodeForRefreshToken;
 }
 
-/// Pigeon version of GoogleSignInUserData.
+/// Pigeon version of [GoogleSignInUserData].
 ///
-/// See GoogleSignInUserData for details.
+/// See [GoogleSignInUserData] for details.
 class UserData {
   UserData({
     required this.email,

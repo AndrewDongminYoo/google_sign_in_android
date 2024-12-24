@@ -40,6 +40,18 @@ class InitParams {
     this.forceCodeForRefreshToken = false,
   });
 
+  factory InitParams.decode(Object result) {
+    result as List<Object?>;
+    return InitParams(
+      scopes: (result[0] as List<Object?>?)!.cast<String>(),
+      signInType: result[1]! as SignInType,
+      hostedDomain: result[2] as String?,
+      clientId: result[3] as String?,
+      serverClientId: result[4] as String?,
+      forceCodeForRefreshToken: result[5]! as bool,
+    );
+  }
+
   List<String> scopes;
 
   SignInType signInType;
@@ -62,18 +74,6 @@ class InitParams {
       forceCodeForRefreshToken,
     ];
   }
-
-  static InitParams decode(Object result) {
-    result as List<Object?>;
-    return InitParams(
-      scopes: (result[0] as List<Object?>?)!.cast<String>(),
-      signInType: result[1]! as SignInType,
-      hostedDomain: result[2] as String?,
-      clientId: result[3] as String?,
-      serverClientId: result[4] as String?,
-      forceCodeForRefreshToken: result[5]! as bool,
-    );
-  }
 }
 
 /// Pigeon version of GoogleSignInUserData.
@@ -81,13 +81,25 @@ class InitParams {
 /// See GoogleSignInUserData for details.
 class UserData {
   UserData({
-    this.displayName,
     required this.email,
     required this.id,
+    this.displayName,
     this.photoUrl,
     this.idToken,
     this.serverAuthCode,
   });
+
+  factory UserData.decode(Object result) {
+    result as List<Object?>;
+    return UserData(
+      displayName: result[0] as String?,
+      email: result[1]! as String,
+      id: result[2]! as String,
+      photoUrl: result[3] as String?,
+      idToken: result[4] as String?,
+      serverAuthCode: result[5] as String?,
+    );
+  }
 
   String? displayName;
 
@@ -111,18 +123,6 @@ class UserData {
       serverAuthCode,
     ];
   }
-
-  static UserData decode(Object result) {
-    result as List<Object?>;
-    return UserData(
-      displayName: result[0] as String?,
-      email: result[1]! as String,
-      id: result[2]! as String,
-      photoUrl: result[3] as String?,
-      idToken: result[4] as String?,
-      serverAuthCode: result[5] as String?,
-    );
-  }
 }
 
 class _PigeonCodec extends StandardMessageCodec {
@@ -130,8 +130,9 @@ class _PigeonCodec extends StandardMessageCodec {
   @override
   void writeValue(WriteBuffer buffer, Object? value) {
     if (value is int) {
-      buffer.putUint8(4);
-      buffer.putInt64(value);
+      buffer
+        ..putUint8(4)
+        ..putInt64(value);
     } else if (value is SignInType) {
       buffer.putUint8(129);
       writeValue(buffer, value.index);
@@ -163,12 +164,14 @@ class _PigeonCodec extends StandardMessageCodec {
 }
 
 class GoogleSignInApi {
-  /// Constructor for [GoogleSignInApi].  The [binaryMessenger] named argument is
-  /// available for dependency injection.  If it is left null, the default
-  /// BinaryMessenger will be used which routes to the host platform.
-  GoogleSignInApi(
-      {BinaryMessenger? binaryMessenger, String messageChannelSuffix = ''})
-      : pigeonVar_binaryMessenger = binaryMessenger,
+  /// Constructor for [GoogleSignInApi].
+  /// The [binaryMessenger] named argument is available for dependency injection
+  /// If it is left null, the default BinaryMessenger will be used which routes
+  /// to the host platform.
+  GoogleSignInApi({
+    BinaryMessenger? binaryMessenger,
+    String messageChannelSuffix = '',
+  })  : pigeonVar_binaryMessenger = binaryMessenger,
         pigeonVar_messageChannelSuffix =
             messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
   final BinaryMessenger? pigeonVar_binaryMessenger;
